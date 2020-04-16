@@ -10,6 +10,8 @@
 import sys
 import math
 
+gauss = lambda u, s, x: (((1/(s*math.sqrt(2*math.pi)))) * math.exp(-(((x - u)**2) / (2 * (s**2)))))
+
 def check_for_err():
     halp = open("help", "r")
 
@@ -26,10 +28,42 @@ def check_for_err():
         except ValueError:
             print("Flag error. Try -h for more informations.")
             sys.exit(84)
+        if int(sys.argv[i]) < 0:
+            print("Flag error. Try -h for more informations.")
+            sys.exit(84)
     return flag
 
+def iq(val):
+    res = 0
+    if len(val) == 3:
+        if val[2] > 200:
+            print("Flag error. Try -h for more informations.")
+            sys.exit(84)
+        i = 0
+        while i < val[2]:
+            res += gauss(*val[0:2], i)
+            i += 0.01
+        print("{:.1f}% of people have an IQ inferior to {}".format(res, val[2]))
+    else:
+        if val[2] > 200 or val[3] > 200 :
+            print("Flag error. Try -h for more informations.")
+            sys.exit(84)
+        i = val[2]
+        while i < val[3]:
+            res += gauss(*val[0:2], i)
+            i += 0.01
+        print("{:.1f}% of people have an IQ between {} and {}".format(res, *val[2:4]))
+
+def display(res):
+    for i in range(201):
+        print("{} {:.5f}".format(i, res[i]))
+
 def calc(val):
-    print(val)
+    res = [gauss(*val[0:2], x) for x in range(201)]
+    if len(val) != 2:
+        iq(val)
+    else:
+        display(res)
     return 0
 
 def main():
