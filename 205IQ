@@ -31,6 +31,9 @@ def check_for_err():
         if int(sys.argv[i]) < 0:
             print("Flag error. Try -h for more informations.")
             sys.exit(84)
+    if flag[0] > 200:
+        print("Flag error. Try -h for more informations.")
+        sys.exit(84)
     return flag
 
 def iq(val):
@@ -45,6 +48,9 @@ def iq(val):
             i += 0.01
         print("{:.1f}% of people have an IQ inferior to {}".format(res, val[2]))
     else:
+        if val[2] > val[3]:
+            print("Flag error. Try -h for more informations.")
+            sys.exit(84)
         if val[2] > 200 or val[3] > 200 :
             print("Flag error. Try -h for more informations.")
             sys.exit(84)
